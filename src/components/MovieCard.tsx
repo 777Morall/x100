@@ -12,17 +12,27 @@ interface MovieCardProps {
 export const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick, layout = 'grid' }) => {
   const views = movie.views || Math.floor(Math.random() * 1000000) + 10000;
   
+  const handleClick = () => {
+    onClick(movie);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    target.src = 'https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=800';
+  };
+  
   if (layout === 'list') {
     return (
       <div 
         className="flex space-x-4 p-4 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors group"
-        onClick={() => onClick(movie)}
+        onClick={handleClick}
       >
         <div className="relative flex-shrink-0">
           <div className="w-40 h-24 bg-gray-200 rounded-lg overflow-hidden">
             <img
               src={movie.cover_image_url}
               alt={movie.title}
+              onError={handleImageError}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
             />
           </div>
@@ -60,13 +70,14 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick, layout = '
   return (
     <div 
       className="group cursor-pointer"
-      onClick={() => onClick(movie)}
+      onClick={handleClick}
     >
       {/* Thumbnail */}
       <div className="relative aspect-video bg-gray-200 rounded-xl overflow-hidden mb-3">
         <img
           src={movie.cover_image_url}
           alt={movie.title}
+          onError={handleImageError}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200 flex items-center justify-center">

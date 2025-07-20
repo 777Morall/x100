@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase, getCurrentUser, signOut } from '../lib/supabase';
-import type { AuthState, User } from '../lib/types';
+import type { AuthState } from '../lib/types';
 
-export const useAuth = (): AuthState & { signOut: () => Promise<void> } => {
+export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
     loading: true,
@@ -47,7 +47,11 @@ export const useAuth = (): AuthState & { signOut: () => Promise<void> } => {
   }, []);
 
   const handleSignOut = async () => {
-    await signOut();
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   return {

@@ -10,9 +10,9 @@ export const useMovies = () => {
   const fetchMovies = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await getMovies();
       setMovies(data);
-      setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch movies');
     } finally {
@@ -75,9 +75,9 @@ export const useMovie = (id: string) => {
       
       try {
         setLoading(true);
+        setError(null);
         const data = await getMovieById(id);
         setMovie(data);
-        setError(null);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch movie');
       } finally {

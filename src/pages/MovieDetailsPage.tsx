@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Star, Calendar, Clock, Tag, Play, ThumbsUp, Share2, Download, Eye } from 'lucide-react';
 import type { Movie } from '../lib/types';
-import { formatViews, formatTimeAgo } from '../lib/constants';
+import { formatViews, formatTimeAgo, getEmbedUrl } from '../lib/constants';
 
 interface MovieDetailsPageProps {
   movie: Movie;
@@ -15,12 +15,9 @@ export const MovieDetailsPage: React.FC<MovieDetailsPageProps> = ({ movie, onBac
   const views = movie.views || Math.floor(Math.random() * 1000000) + 10000;
   const likes = movie.likes || Math.floor(Math.random() * 10000) + 100;
 
-  const getEmbedUrl = (url: string) => {
-    if (url.includes('youtube.com/watch')) {
-      const videoId = url.split('v=')[1]?.split('&')[0];
-      return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-    }
-    return url;
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    target.src = 'https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=800';
   };
 
   return (
@@ -45,6 +42,7 @@ export const MovieDetailsPage: React.FC<MovieDetailsPageProps> = ({ movie, onBac
                     <img
                       src={movie.cover_image_url}
                       alt={movie.title}
+                      onError={handleImageError}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">

@@ -24,3 +24,9 @@ export interface AuthState {
   user: User | null;
   loading: boolean;
 }
+
+export interface MovieCategory {
+  id: string;
+  name: string;
+  icon: string;
+}
